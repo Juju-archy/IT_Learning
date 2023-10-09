@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Our products - Daki Suki{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-3">
+            <h3>Filter</h3>
+            {{ form(form) }}
+        </div>
+
+        <div class="col-md-9">
+            <h3>Our products</h3>
+            <div class="row product-container">
+                {% for product in products %}
+                    <div class="col-md-3" style="padding:2em;">
+                        <a href="{{ path('display-prod', {'slug' : product.slug}) }}">
+                            <div class="product-item text-center">
+                                <img src="/upload/{{ product.illustration }}/" class="img-fluid">
+                                <h5 class="mt-2">{{ product.name }}</h5>
+                                <span class="product-subtitle">{{ product.subtitle }}</span>
+                                <span class="product-pice">{{ (product.price / 100)|number_format(2,',','.') }} €</span>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}

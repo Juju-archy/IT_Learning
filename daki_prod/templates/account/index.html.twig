@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My account{% endblock %}
+
+{% block content %}
+    <h1>Welcome {{ app.user.firstname }}</h1>
+    {% if is_granted('ROLE_ADMIN') %}
+        - <a href="/admin">Admin access backoffice?</a><br>
+    {% endif %}
+    - <a href="{{ path('account_password') }}">Modify my password</a><br>
+    - <a href="{{ path('account_address') }}">My address</a><br>
+    - <a href="{{ path('account_order') }}">Command</a><br>
+{% endblock %}

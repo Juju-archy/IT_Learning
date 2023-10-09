@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Our artists{% endblock %}
+
+{% block content %}
+    <h2 class="mb-4">Our Artist</h2>
+    {% for artist in artists %}
+        <div class="row">
+            <div class="col-md-5">
+                <h3>{{ artist.name }}</h3>
+                <img src="{{ asset('/upload/'~artist.illustration) }}" class="img-artist">
+            </div>
+            <div class="col-md-5">
+                <br>
+                <strong>Description :</strong><br>
+                {{ artist.content }}<br>
+                <hr>
+                <strong>Social Network:</strong><br>
+                {% if artist.twitterUrl != null %}
+                <a href="{{ artist.twitterUrl }}"><strong>Twitter</strong></a><br>
+                {% endif %}
+                {% if artist.deviantArtUrl != null %}
+                    <a href="{{ artist.deviantArtUrl }}"><strong>DeviantArt</strong></a><br>
+                {% endif %}
+                {% if artist.pixiv != null %}
+                    <a href="{{ artist.pixiv }}"><strong>Pixiv</strong></a><br>
+                {% endif %}
+            </div>
+        </div>
+        <hr>
+    {% endfor %}
+{% endblock %}

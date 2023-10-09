@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order validated{% endblock %}
+
+{% block content %}
+    <h2>Order validated</h2>
+    <p>Welcome <strong>{{ order.user.firstname }} {{ order.user.lastname }}</strong>,<br>
+        We thank you for your order n°<strong>{{ order.reference }}</strong>.<br>
+        A confirmation email is send to your address email <strong>{{ order.user.email }}</strong>
+        <hr>
+        Your order is shipped by <strong>{{ order.carrierName }}</strong><br>
+        Your address : <br>
+        {{ order.delivery|raw }}
+        <hr>
+        You can follow your order in your <a href="{{ path('account_order') }}">account</a>.
+    </p>
+
+
+{% endblock %}
