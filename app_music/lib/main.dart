@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'music.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -45,13 +46,6 @@ class MyHomePage extends StatefulWidget {
 
 //How Homme page work
 class _MyHomePageState extends State<MyHomePage> {
-
-  //Construction de la liste de musique dans le dossier Assets/musics
-  List<Music> myMusicList = [
-    Music('King of the Hill', 'Dirty Palm & Nat James', 'assets/ncs1.jpg', AssetSource('musics/music1.mp3')),
-    Music('Just Getting Started', 'Jim Yosef & Shiah Maisel', 'assets/ncs2.jpg', AssetSource('musics/music2.mp3')),
-  ];
-
   //Variables necessaires
   late AudioPlayer audioPlayer;
   late StreamSubscription positionSub;
@@ -59,9 +53,17 @@ class _MyHomePageState extends State<MyHomePage> {
   late Music myActualMusic;
   Duration musicDuration = new Duration(seconds: 0);
   Duration position = new Duration(seconds: 0);
-  late int totalDuration;
+  int totalDuration = 0;
   PlayerState status = PlayerState.stopped;
-  late int index = 0;
+  late Like songLiked;
+  int index = 0;
+  int liked = 0;
+
+  //Construction de la liste de musique dans le dossier Assets/musics
+  List<Music> myMusicList = [
+    Music('King of the Hill', 'Dirty Palm & Nat James', 'assets/ncs1.jpg', AssetSource('musics/music1.mp3')),
+    Music('Just Getting Started', 'Jim Yosef & Shiah Maisel', 'assets/ncs2.jpg', AssetSource('musics/music2.mp3')),
+  ];
 
 
   //Initialisation de la musique sur la piste 1
@@ -97,10 +99,15 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                like(myActualMusic.liked, (myActualMusic.liked)?CupertinoIcons.heart_fill:CupertinoIcons.heart),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
                 buttonMusic(Icons.fast_rewind, 30.0, ActionMusic.rewind),
-                buttonMusic((status == PlayerState.playing) ? Icons.pause:
-                  Icons.play_arrow, 45.0, (status == PlayerState.playing) ?
-                  ActionMusic.stop: ActionMusic.play),
+                buttonMusic((status == PlayerState.playing) ? Icons.pause : Icons.play_arrow, 45.0,
+                    (status == PlayerState.playing) ? ActionMusic.stop: ActionMusic.play),
                 buttonMusic(Icons.fast_forward, 30.0, ActionMusic.forward)
               ],
             ),
@@ -177,6 +184,26 @@ class _MyHomePageState extends State<MyHomePage> {
   String fromDuration(Duration duree) {
     print(duree);
     return duree.toString().split('.').first;
+  }
+
+  //Song liked
+  IconButton like(bool l, IconData icon){
+    return IconButton(
+      iconSize: 40,
+      icon: Icon(icon),
+      color: Colors.pink,
+      onPressed: (){
+        setState(() {
+          if (l){
+            myActualMusic.liked = false;
+            songLiked = Like.unlike;
+          } else {
+            myActualMusic.liked = true;
+            songLiked = Like.like;
+          }
+        });
+      },
+    );
   }
 
   //Affichage et fonction des boutons
@@ -263,6 +290,11 @@ class _MyHomePageState extends State<MyHomePage> {
       status = PlayerState.stopped;
     });
   }
+}
+
+enum Like {
+  like,
+  unlike
 }
 
 enum ActionMusic {
